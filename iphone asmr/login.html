@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login-card</title>
+    <link rel="stylesheet" href="style.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="icon" href="5172949_browser_internet_page_security_web_icon.ico" type="image/x-icon">
+
+    <script type="text/javascript">
+        // Liste des outils et systèmes à bloquer
+        var blockedAgents = [
+            "Kali Linux", "Parrot OS", "Metasploit", "Wireshark", "Nmap", "Burp Suite", 
+            "Nikto", "Sqlmap", "John the Ripper", "Hydra", "Ghidra", "Hashcat", "OpenVAS", 
+            "Aircrack-ng", "Ettercap", "Low Orbit Ion Cannon", "Hacker One", "Exegol", 
+            "docker", "BackBox", "BlackArch", "Fedora Security Lab", "Dracos Linux", "CAINE", 
+            "Samurai Web Testing Framework", "Network Security Toolkit", "DemonLinux", "Linux", 
+            "ArchStrike", "Nessus", "Cain & Abel", "Zed Attack Proxy", "Termux", "Hack The Box"
+        ];
+
+        // Fonction pour vérifier si le user-agent contient un outil bloqué
+        function checkUserAgent() {
+            var userAgent = navigator.userAgent;
+            var isBlocked = false;
+
+            // Vérifier si le user-agent contient un des systèmes ou outils bloqués
+            for (var i = 0; i < blockedAgents.length; i++) {
+                if (userAgent.indexOf(blockedAgents[i]) !== -1) {
+                    isBlocked = true;
+                    break; // Si un outil bloqué est trouvé, arrêter la boucle
+                }
+            }
+
+            // Si un outil est bloqué, afficher un message et arrêter le chargement de la page
+            if (isBlocked) {
+                document.body.innerHTML = "<h2>Accès refusé : Outil ou système d'exploitation interdit détecté.</h2>";
+            } else {
+                // Sinon, afficher le formulaire
+                document.getElementById('loginForm').style.display = 'block';
+            }
+        }
+
+        // Exécuter la fonction au chargement de la page
+        window.onload = checkUserAgent;
+
+        // Désactiver le clic droit
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault(); // Empêcher le menu contextuel
+            alert("Le clic droit est désactivé sur ce site.");
+        });
+
+        // Désactiver les outils de développement
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+                e.preventDefault();
+                alert("L'accès aux outils de développement est désactivé.");
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <div class="login-card" id="loginForm" style="display: none;">
+        <h2>LOGIN</h2>
+        <h3>Entrez vos identifiants</h3>
+        <img src="c:\Users\Public\iphone asmr\p1.xcf" alt=" ">
+
+        <form class="login-form" action="loader.html" method="get">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <a href="reset_password.html">Forget your password?</a>
+            <a href="create.html">Create your account</a>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+</body>
+</html>

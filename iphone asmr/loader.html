@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chargement</title>
+  <style>
+    body {
+      background: #000;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    /* Style de l'animation du loader */
+    .loader {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .loader-outter,
+    .loader-inner {
+      position: absolute;
+      border: 4px solid #fff;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .loader-outter {
+      width: 100%;
+      height: 100%;
+      border-left-color: transparent;
+      animation: rotate 1s cubic-bezier(0.15, 0.61, 0.58, 0.4) infinite;
+    }
+
+    .loader-inner {
+      width: 35px;
+      height: 35px;
+      border-top-color: transparent;
+      animation: rotate-reverse 1s cubic-bezier(0.15, 0.61, 0.58, 0.4) infinite;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes rotate-reverse {
+      100% {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
+    }
+
+    /* Message d'erreur */
+    .error-message {
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader (animation de chargement) -->
+  <div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+  </div>
+
+  <div class="error-message" id="errorMessage" style="display: none;">
+    <h2>Accès refusé : Outil ou système d'exploitation interdit détecté.</h2>
+  </div>
+
+  <script>
+    // Liste des outils et systèmes à bloquer
+    var blockedAgents = [
+      "Kali Linux", "Parrot OS", "Metasploit", "Wireshark", "Nmap", "Burp Suite", 
+      "Nikto", "Sqlmap", "John the Ripper", "Hydra", "Ghidra", "Hashcat", "OpenVAS", 
+      "Aircrack-ng", "Ettercap", "Low Orbit Ion Cannon", "Hacker One", "Exegol", 
+      "docker", "BackBox", "BlackArch", "Fedora Security Lab", "Dracos Linux", "CAINE", 
+      "Samurai Web Testing Framework", "Network Security Toolkit", "DemonLinux", "Linux", 
+      "ArchStrike", "Nessus", "Cain & Abel", "Zed Attack Proxy", "Termux", "Hack The Box"
+    ];
+
+    // Fonction pour vérifier si le user-agent contient un outil bloqué
+    function checkUserAgent() {
+      var userAgent = navigator.userAgent;
+      var isBlocked = false;
+
+      // Vérifier si le user-agent contient un des systèmes ou outils bloqués
+      for (var i = 0; i < blockedAgents.length; i++) {
+        if (userAgent.indexOf(blockedAgents[i]) !== -1) {
+          isBlocked = true;
+          break; // Si un outil bloqué est trouvé, arrêter la boucle
+        }
+      }
+
+      // Si un outil est bloqué, afficher un message d'erreur
+      if (isBlocked) {
+        document.getElementById('errorMessage').style.display = 'block';
+        document.querySelector('.loader').style.display = 'none';  // Cacher le loader
+      } else {
+        // Si aucun outil bloqué, rediriger vers une autre page après le délai
+        setTimeout(function() {
+          window.location.href = "pages/menu.html"; // Rediriger vers la page de la carte
+        }, 3000); // Attendre 3 secondes
+      }
+    }
+
+    // Exécuter la fonction de vérification au chargement de la page
+    window.onload = function() {
+      // Lancer la vérification après le délai du loader
+      setTimeout(function() {
+        checkUserAgent(); // Vérifier le user-agent
+      }, 3000); // Attendre 3 secondes avant la vérification
+    };
+  </script>
+</body>
+</html>
